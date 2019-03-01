@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// An event triggered whenever the state of the game changes
     /// </summary>
-    public EventOnDataChange<GameState> OnCurrentGameStateChange { private set; get; }
+    public EventOnDataChange<GameState> OnCurrentGameStateChange { get; private set; }
 
     [SerializeField] private GameState initialState = GameState.Start;
 
