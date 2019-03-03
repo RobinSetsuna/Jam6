@@ -76,7 +76,7 @@ public class PlayerMovement : MonoBehaviour
             dataManager.BecomeSmall(collision);
             StartCoroutine(BecomeSmaller());
         }
-        else if (collision.gameObject.tag.Equals("SmallObj"))
+        else if (collision.gameObject.tag.Equals("ShieldObj"))
         {
 
             Debug.Log("Collision:" + collision.gameObject.tag.ToString());

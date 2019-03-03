@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - HealObj
+  - ShieldObj
+  - SmalObj
+  - SpeedUpObj
+  - Undefined
+  - SmallObj
   layers:
   - Default
   - TransparentFX
