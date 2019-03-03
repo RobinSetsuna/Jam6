@@ -145,6 +145,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   dataManager: {fileID: 1308537469}
+  fireInterval: 2
+  speedUpTime: 3
+  smallInterval: 3
+  shieldInterval: 3
+  bullet: {fileID: 1940127579870138, guid: 80964d694c42f4109abadbb99cbe4b59, type: 2}
 --- !u!70 &357734792
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -282,8 +287,9 @@ MonoBehaviour:
   playerHealth: 10
   maxHealth: 15
   intervalOfHealOBj: 5
-  healObjPrefab: {fileID: 1817662968851780, guid: 0f0b211cf97724fc999fda2b626b09c9,
-    type: 2}
+  intervalOfSpeedUpObj: 5
+  intervalOfSmallObj: 5
+  intervalOfShieldObj: 5
 --- !u!1 &1830027937
 GameObject:
   m_ObjectHideFlags: 0
