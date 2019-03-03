@@ -12,8 +12,8 @@ public class ItemDataManager : MonoBehaviour {
     //public GameObject healObjPrefab;
 
 
-    private float xConstraint = 4.38f;
-    private float yConstraint = 5.5f;
+    private float xConstraint = 12f;
+    private float yConstraint = 6.7f;
     private float previousTimeHeal;
     private float previousSpeedUp;
     private float previousSmall;
