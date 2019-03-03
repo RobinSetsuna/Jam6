@@ -86,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
     }
     void Shooting()
     {
-        GameObject BulletPrefab = ObjectPool.GetInstance().GetObj("Bullet", this.transform.position);
+        GameObject BulletPrefab = ObjectPool.GetInstance().GetObj("Bullet", this.transform.position + Vector3.up * 2.0f);
 
     }
 
