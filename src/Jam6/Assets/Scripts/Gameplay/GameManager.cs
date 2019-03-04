@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
             if (value == currentGameState)
             {
 #if UNITY_EDITOR
-                LogUtility.PrintLogFormat("GameManager", "Reset {0}.", value);
+                Debug.Log(LogUtility.MakeLogStringFormat("GameManager", "Reset {0}.", value));
 #endif
 
                 //switch (currentGameState)
@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
                 //}
 
 #if UNITY_EDITOR
-                LogUtility.PrintLogFormat("GameManager", "Made a transition to {0}.", value);
+                Debug.Log(LogUtility.MakeLogStringFormat("GameManager", "Made a transition to {0}.", value));
 #endif
 
                 GameState previousGameState = CurrentGameState;
@@ -110,6 +110,15 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         CurrentGameState = initialState;
+    }
+
+    private void Update()
+    {
+        Bullet bullet = BulletManager.Singleton.GetBullet(Random.Range(0, 2));
+
+        bullet.GetComponent<LinearMovement>().initialPosition = Camera.main.transform.position - new Vector3(0, 5, -10);
+
+        bullet.gameObject.SetActive(true);
     }
 }
 
