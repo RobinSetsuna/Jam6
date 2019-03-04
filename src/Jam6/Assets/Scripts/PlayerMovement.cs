@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -35,7 +34,6 @@ public class PlayerMovement : MonoBehaviour
     }
     void Move()
     {
-
         if (Input.GetKey(KeyCode.W))
         {
             this.transform.position += Vector3.up * speed * Time.deltaTime;
@@ -56,8 +54,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //Detect if collision of items happen
-        Debug.Log("Collision:" + collision.gameObject.tag.ToString());
+        // Detect if collision of items happen
+        //Debug.Log("Collision:" + collision.gameObject.tag.ToString());
+
         if (collision.gameObject.tag.Equals("HealObj"))
         {
             Debug.Log("Collision:" + collision.gameObject.tag.ToString());
@@ -84,10 +83,18 @@ public class PlayerMovement : MonoBehaviour
             StartCoroutine(ArmWithShield());
         }
     }
+
     void Shooting()
     {
-        GameObject BulletPrefab = ObjectPool.GetInstance().GetObj("Bullet", this.transform.position + Vector3.up * 2.0f);
+        if (ObjectRecycler.Singleton)
+        {
+            Recyclable bullet = ObjectRecycler.Singleton.GetObject(Random.Range(0, 2));
+            bullet.GetComponent<LinearMovement>().initialPosition = transform.position + Vector3.up * 0.2f;
 
+            bullet.gameObject.SetActive(true);
+        }
+        else
+            ObjectPool.GetInstance().GetObj("Bullet", this.transform.position + Vector3.up * 2.0f);
     }
 
     IEnumerator SpeedUpFireInterval()

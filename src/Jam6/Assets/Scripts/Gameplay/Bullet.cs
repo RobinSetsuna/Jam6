@@ -1,34 +1,37 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
-[RequireComponent(typeof(Movement), typeof(Collider2D))]
-public class Bullet : MonoBehaviour
+[RequireComponent(typeof(Collider2D), typeof(Rigidbody2D))]
+public class Bullet : Recyclable
 {
-    public int id = -1;
     public bool isFriendly = false;
-    public float lifeSpan = 3;
-    public float rawDamage = 1;
+    public int numHits = 1;
+    public float rawDamage = 0;
 
-    private float t0 = -1;
+    private int numHitsRemaining;
 
-    private void OnTriggerEnter(Collider other)
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        numHitsRemaining = numHits;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (isFriendly)
         {
             if (other.tag == "Enemy")
-                other.GetComponent<Enemy>().ApplyDamage(rawDamage);
+            {
+                other.GetComponent<IDamageable>().ApplyDamage(rawDamage);
+                if (--numHitsRemaining == 0)
+                    Die();
+            }
         }
-    }
-
-    private void OnEnable()
-    {
-        StartCoroutine(RecycleAfter(lifeSpan));
-    }
-
-    private IEnumerator RecycleAfter(float t)
-    {
-        yield return new WaitForSeconds(t);
-
-        BulletManager.Singleton.Recycle(this);
+        else if (other.tag == "Player")
+        {
+            other.GetComponent<IDamageable>().ApplyDamage(rawDamage);
+            if (--numHitsRemaining == 0)
+                Die();
+        }
     }
 }

@@ -111,14 +111,5 @@ public class GameManager : MonoBehaviour
     {
         CurrentGameState = initialState;
     }
-
-    private void Update()
-    {
-        Bullet bullet = BulletManager.Singleton.GetBullet(Random.Range(0, 2));
-
-        bullet.GetComponent<LinearMovement>().initialPosition = Camera.main.transform.position - new Vector3(0, 5, -10);
-
-        bullet.gameObject.SetActive(true);
-    }
 }
 
