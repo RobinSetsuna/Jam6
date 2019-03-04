@@ -10,6 +10,8 @@ using UnityEngine;
 public enum GameState : int
 {
     Start = 1,
+    LoadLevel = 2,
+    Level = 3,
 }
 
 /// <summary>
@@ -30,6 +32,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameState initialState = GameState.Start;
 
     private GameState currentGameState;
+
+    private float playTime;
 
     /// <summary>
     /// The current state of the game
@@ -70,16 +74,25 @@ public class GameManager : MonoBehaviour
                 GameState previousGameState = CurrentGameState;
                 currentGameState = value;
 
-                // After entering the new state
-                //switch (currentGameState)
-                //{
-                //}
-
                 OnCurrentGameStateChange.Invoke(previousGameState, currentGameState);
 
-                //switch (currentGameState)
-                //{
-                //}
+                // After entering the new state
+                switch (currentGameState)
+                {
+                    case GameState.Start:
+                        MathUtility.Initialize();
+                        CurrentGameState = GameState.LoadLevel;
+                        break;
+
+                    case GameState.LoadLevel:
+                        Instantiate(ResourceUtility.GetPrefab("Level"));
+                        CurrentGameState = GameState.Level;
+                        break;
+
+                    case GameState.Level:
+                        playTime = 0;
+                        break;
+                }
             }
         }
     }
@@ -110,6 +123,36 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         CurrentGameState = initialState;
+    }
+
+    private void Update()
+    {
+        switch (currentGameState)
+        {
+            case GameState.Level:
+                playTime += Time.deltaTime;
+                if (Random.Range(0f, 1000f) < 10)
+                {
+                    int r = Random.Range(0, 100);
+
+                    int id = 9;
+                    if (r < 80)
+                        id = 8;
+
+                    Hover hoverEnemy = ObjectRecycler.Singleton.GetObject<Hover>(id);
+
+                    float x = Random.Range(-5f, 5f);
+                    float y = Random.Range(-2f, 8f);
+
+                    hoverEnemy.initialPosition = new Vector3(x + Mathf.Sign(x) * Random.Range(7f, 10f), y + Mathf.Sign(Random.Range(-5f, 5f)), 0);
+                    hoverEnemy.targetPosition = new Vector3(x, y, 0);
+
+                    hoverEnemy.gameObject.SetActive(true);
+
+                    Debug.Log(111);
+                }
+                break;
+        }
     }
 }
 

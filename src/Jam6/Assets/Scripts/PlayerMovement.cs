@@ -88,8 +88,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if (ObjectRecycler.Singleton)
         {
-            Recyclable bullet = ObjectRecycler.Singleton.GetObject(Random.Range(0, 2));
-            bullet.GetComponent<LinearMovement>().initialPosition = transform.position + Vector3.up * 0.2f;
+            Recyclable bullet = ObjectRecycler.Singleton.GetObject(0);
+            bullet.GetComponent<LinearMovement>().initialPosition = transform.position + Vector3.up * 0.8f;
 
             bullet.gameObject.SetActive(true);
         }

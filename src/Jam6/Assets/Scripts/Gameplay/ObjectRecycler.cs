@@ -7,28 +7,38 @@ public class ObjectRecycler : MonoBehaviour
 
     [SerializeField] private Recyclable[] prefabs;
 
-    private Stack<Recyclable>[] inactiveBullets;
+    private Stack<Recyclable>[] recycledObjects;
 
     private ObjectRecycler() { }
 
     public Recyclable GetObject(int id)
     {
-        Recyclable recyclable;
+        if (recycledObjects[id].Count > 0)
+            return recycledObjects[id].Pop();
 
-        if (inactiveBullets[id].Count > 0)
-            recyclable = inactiveBullets[id].Pop();
-        else
-            recyclable = Instantiate(prefabs[id], transform);
-
+        Recyclable recyclable = Instantiate(prefabs[id], transform);
         recyclable.id = id;
 
         return recyclable;
     }
 
+    public T GetObject<T>(int id) where T : MonoBehaviour
+    {
+        if (recycledObjects[id].Count > 0)
+            return recycledObjects[id].Pop().GetComponent<T>();
+
+        T obj = Instantiate(prefabs[id].GetComponent<T>(), transform);
+
+        if (obj)
+            obj.GetComponent<Recyclable>().id = id;
+
+        return obj;
+    }
+
     public void Recycle(Recyclable recyclable)
     {
         if (recyclable.id >= 0)
-            inactiveBullets[recyclable.id].Push(recyclable);
+            recycledObjects[recyclable.id].Push(recyclable);
     }
 
     private void Awake()
@@ -38,10 +48,10 @@ public class ObjectRecycler : MonoBehaviour
             Singleton = this;
             DontDestroyOnLoad(gameObject);
 
-            inactiveBullets = new Stack<Recyclable>[prefabs.Length];
+            recycledObjects = new Stack<Recyclable>[prefabs.Length];
 
-            for (int id = 0; id < inactiveBullets.Length; id++)
-                inactiveBullets[id] = new Stack<Recyclable>();
+            for (int id = 0; id < recycledObjects.Length; id++)
+                recycledObjects[id] = new Stack<Recyclable>(256);
         }
         else if (this != Singleton)
             Destroy(gameObject);

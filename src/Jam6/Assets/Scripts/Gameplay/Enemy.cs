@@ -3,10 +3,14 @@
 [RequireComponent(typeof(Collider2D))]
 public abstract class Enemy : Recyclable, IDamageable
 {
-    [SerializeField] private float maxHp;
+    [SerializeField] protected float maxHp;
     [SerializeField] protected float speed = 3;
 
-    private float hp;
+    protected float hp;
+
+    protected int currentState;
+
+    protected abstract int CurrentState { get; set; }
 
     public float ApplyDamage(float rawDamage)
     {
@@ -23,5 +27,8 @@ public abstract class Enemy : Recyclable, IDamageable
         base.OnEnable();
 
         hp = maxHp;
+
+        currentState = 0;
+        CurrentState = 1;
     }
 }
