@@ -370,7 +370,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: -1
   lifeSpan: -1
-  maxHp: 1000
+  maxHp: 100000
   speed: 1.5
   leftLaser: {fileID: 1593044998923106}
   rightLaser: {fileID: 1064420767487420}

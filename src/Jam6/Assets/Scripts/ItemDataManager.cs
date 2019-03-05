@@ -12,8 +12,8 @@ public class ItemDataManager : MonoBehaviour {
     //public GameObject healObjPrefab;
 
 
-    private float xConstraint = 12f;
-    private float yConstraint = 6.7f;
+    public float xConstraint = 8f;
+    private float yConstraint = 8f;
     private float previousTimeHeal;
     private float previousSpeedUp;
     private float previousSmall;
@@ -22,7 +22,7 @@ public class ItemDataManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
         //
-        GameObject HealObj = ObjectPool.GetInstance().GetObj("HealObj", new Vector3(Random.Range((-1.0f) * xConstraint, xConstraint), yConstraint, 0.0f));
+        //GameObject HealObj = ObjectPool.GetInstance().GetObj("HealObj", new Vector3(Random.Range((-1.0f) * xConstraint, xConstraint), yConstraint, 0.0f));
 
         
     }
