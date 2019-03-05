@@ -6,9 +6,11 @@ public class BrainBoss : Enemy
     [SerializeField] private GameObject leftLaser;
     [SerializeField] private GameObject rightLaser;
     [SerializeField] private float fireInterval = 2f;
+    [SerializeField] private int burstThreshold = 10000;
 
     private Vector3 orientation;
 
+    private int currentBurstThreshold;
     private float t;
     private float tf1;
     private float tf2;
@@ -41,6 +43,11 @@ public class BrainBoss : Enemy
                 // Before leaving the previous state
                 switch (currentState)
                 {
+                    case 1:
+                        damageFactor = 1;
+                        break;
+
+
                     case 3:
                         StartCoroutine(TurnOffLaser(2));
                         break;
@@ -58,6 +65,7 @@ public class BrainBoss : Enemy
                 {
                     case 1:
                         orientation = Vector3.down;
+                        damageFactor = 0;
                         break;
 
 
@@ -96,8 +104,7 @@ public class BrainBoss : Enemy
     {
         base.OnEnable();
 
-        currentState = 0;
-        CurrentState = 1;
+        currentBurstThreshold = maxHp - burstThreshold;
     }
 
     private IEnumerator TurnOffLaser(float t)
@@ -207,8 +214,11 @@ public class BrainBoss : Enemy
 
         tf1 -= Time.deltaTime;
 
-        if (Mathf.FloorToInt(hp / maxHp * 99) % 10 == 0)
+        if (hp < currentBurstThreshold)
+        {
             CurrentState = 6;
+            currentBurstThreshold -= 10000;
+        }
 
         switch (currentState)
         {

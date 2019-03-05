@@ -91,7 +91,7 @@ public class GUIManager : MonoBehaviour
         if (IsInViewport(name))
             return uiWindowsOpened[name];
 
-        GUIWindow uiWindow = Instantiate(ResourceUtility.GetUIPrefab<GUIWindow>(name), transform, false);
+        GUIWindow uiWindow = Instantiate(ResourceUtility.GetGUIPrefab<GUIWindow>(name), transform, false);
 
         uiWindow.transform.SetSiblingIndex(0);
 

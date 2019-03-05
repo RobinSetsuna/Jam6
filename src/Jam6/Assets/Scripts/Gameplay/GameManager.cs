@@ -107,6 +107,7 @@ public class GameManager : MonoBehaviour
                     case GameState.LoadLevel:
                         level = Instantiate(ResourceUtility.GetPrefab<LinearMovement>("Level"));
                         spawnQueue.Enqueue(new SpawnData(12, 10, new Vector3(-4, 15, 0), new Vector3(-4, 5, 0)));
+                        GUIManager.Singleton.Open("HUD");
                         CurrentGameState = GameState.Level;
                         break;
 

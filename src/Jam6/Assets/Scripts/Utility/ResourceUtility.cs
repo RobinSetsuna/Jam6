@@ -16,8 +16,8 @@ public struct ResourceUtility
         return GetPrefab<GameObject>(directory);
     }
 
-    public static T GetUIPrefab<T>(string name) where T : Object
+    public static T GetGUIPrefab<T>(string name) where T : Object
     {
-        return Resources.Load<T>("Prefabs/UI/" + name);
+        return Resources.Load<T>("Prefabs/GUI/" + name);
     }
 }

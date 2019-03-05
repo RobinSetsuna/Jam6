@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public float smallInterval = 3.0f;
     public float shieldInterval = 3.0f;
 
-    [SerializeField] private Transform barrel;
+    [SerializeField] private Transform[] barrels = new Transform[1];
     [SerializeField] private int bulletID = 0;
 
     private float t = 0;
@@ -28,18 +28,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Move();
 
-        LinearMovement bullet;
-        while (t <= 0)
-        {
-            bullet = ObjectRecycler.Singleton.GetObject<LinearMovement>(bulletID);
-
-            bullet.initialPosition = barrel.position;
-            bullet.spawnTime = Time.time + t;
-
-            bullet.gameObject.SetActive(true);
-
-            t += fireInterval;
-        }
+        Player.Singleton.MainWeapon.Fire(ref t, barrels, Player.Singleton.Energy);
 
         t -= Time.deltaTime;
     }
@@ -101,6 +90,7 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(speedUpTime);
         fireInterval = 2.0f;
     }
+
     IEnumerator BecomeSmaller()
     {
         if (!isSmall)
@@ -113,6 +103,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
     }
+
     IEnumerator ArmWithShield()
     {
         //Bool -> isShield with isShield = flase, the enememy can damage player
@@ -125,8 +116,9 @@ public class PlayerMovement : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        if (barrel)
-            Gizmos.DrawSphere(barrel.position, 0.1f);
+        for (int i = 0; i < barrels.Length; i++)
+            if (barrels[i])
+                Gizmos.DrawSphere(barrels[i].position, 0.1f);
     }
 #endif
 }

@@ -7,6 +7,7 @@ public abstract class Enemy : Recyclable, IDamageable
     [SerializeField] protected float speed = 3;
 
     protected int hp;
+    protected int damageFactor;
 
     protected int currentState;
 
@@ -14,7 +15,7 @@ public abstract class Enemy : Recyclable, IDamageable
 
     public int ApplyDamage(int rawDamage)
     {
-        hp -= rawDamage;
+        hp -= rawDamage * damageFactor;
 
         if (hp <= 0)
             Die();
@@ -27,6 +28,7 @@ public abstract class Enemy : Recyclable, IDamageable
         base.OnEnable();
 
         hp = maxHp;
+        damageFactor = 1;
 
         currentState = 0;
         CurrentState = 1;

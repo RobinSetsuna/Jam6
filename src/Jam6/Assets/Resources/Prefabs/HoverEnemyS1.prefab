@@ -109,11 +109,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 8
   lifeSpan: 0
-  maxHp: 300
+  maxHp: 100
   speed: 5
   initialPosition: {x: 0, y: 0, z: 0}
   targetPosition: {x: 0, y: 0, z: 0}
-  fireInterval: 1
+  fireInterval: 2
   bulletID: 3
 --- !u!212 &212897672459255520
 SpriteRenderer:
