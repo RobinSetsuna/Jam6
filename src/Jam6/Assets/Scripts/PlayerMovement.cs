@@ -17,7 +17,6 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isSmall = false;
 
-
     // Use this for initialization
     void OnEnable()
     {

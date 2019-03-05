@@ -132,6 +132,7 @@ MonoBehaviour:
   speed: 3
   orientation: {x: 0, y: 1, z: 0}
   initialPosition: {x: 0, y: 0, z: 0}
+  spawnTime: 0
 --- !u!114 &114942782690906318
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -147,7 +148,7 @@ MonoBehaviour:
   lifeSpan: 7
   isFriendly: 0
   numHits: 1
-  rawDamage: 5
+  rawDamage: 300
 --- !u!212 &212436768678170990
 SpriteRenderer:
   m_ObjectHideFlags: 1

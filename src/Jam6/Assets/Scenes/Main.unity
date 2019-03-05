@@ -331,6 +331,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 1040270969932476, guid: 70a2c0a45607bc347bd90cfceb30f3b9, type: 2}
+      propertyPath: m_TagString
+      value: Wing
+      objectReference: {fileID: 0}
+    - target: {fileID: 1412894367372268, guid: 70a2c0a45607bc347bd90cfceb30f3b9, type: 2}
+      propertyPath: m_TagString
+      value: Wing
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 70a2c0a45607bc347bd90cfceb30f3b9, type: 2}
   m_IsPrefabAsset: 0
