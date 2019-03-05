@@ -206,6 +206,7 @@ GameObject:
   - component: {fileID: 61923386667264080}
   - component: {fileID: 114733940693092304}
   - component: {fileID: 114387266794977532}
+  - component: {fileID: 95779364426250112}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -504,7 +505,7 @@ BoxCollider2D:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1906838524707806}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -523,6 +524,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.3, y: 0.7}
   m_EdgeRadius: 0
+--- !u!95 &95779364426250112
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1906838524707806}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b1cefe7e90319f4419b7b17ee1849e21, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114387266794977532
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -535,8 +554,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  rotationSpeed: 250
   dataManager: {fileID: 0}
-  fireInterval: 0.1
   speedUpTime: 3
   smallInterval: 3
   shieldInterval: 3
@@ -550,7 +569,7 @@ MonoBehaviour:
   - {fileID: 4347970684565312}
   - {fileID: 4305758035430016}
   - {fileID: 4525657256756586}
-  bulletID: 0
+  screenWrap: 0
 --- !u!114 &114733940693092304
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -566,7 +585,7 @@ MonoBehaviour:
   initialNumLives: 3
   initialWeapon: {fileID: 11400000, guid: c0be890c350c294489724313c6c67f30, type: 2}
   maxHp: 0
-  maxEnergy: 5000
+  maxEnergy: 10000
 --- !u!212 &212108416205243750
 SpriteRenderer:
   m_ObjectHideFlags: 1
