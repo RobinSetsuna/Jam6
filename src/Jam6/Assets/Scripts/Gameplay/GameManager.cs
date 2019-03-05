@@ -35,6 +35,8 @@ public class GameManager : MonoBehaviour
 
     private float playTime;
 
+    bool temp = false;
+
     /// <summary>
     /// The current state of the game
     /// </summary>
@@ -150,6 +152,12 @@ public class GameManager : MonoBehaviour
                     hoverEnemy.gameObject.SetActive(true);
 
                     Debug.Log(111);
+                }
+                if(playTime > 15f && temp == false)
+                {
+                    var boss = Instantiate(ResourceUtility.GetPrefab("FinalBoss"));
+                    boss.SetActive(true);
+                    temp = true;
                 }
                 break;
         }
