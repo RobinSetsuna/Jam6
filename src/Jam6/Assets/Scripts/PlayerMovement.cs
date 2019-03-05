@@ -4,16 +4,26 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public float speed = 2.0f;
+    public float rotationSpeed = 250.0f;
     public ItemDataManager dataManager;
     public float fireInterval = 2.0f;
     public float speedUpTime = 3.0f;
     public float smallInterval = 3.0f;
     public float shieldInterval = 3.0f;
 
+    public bool screenWrap = false;
+
     [SerializeField] private Transform barrel;
     [SerializeField] private int bulletID = 0;
 
     private float t = 0;
+
+    private Camera mainCamera;
+
+    private int animationState = 0;
+    private const int PLAYER_IDLE = 0;
+    private const int PLAYER_LEFT = 1;
+    private const int PLAYER_RIGHT = 2;
 
     private bool isSmall = false;
 
@@ -22,12 +32,14 @@ public class PlayerMovement : MonoBehaviour
     void OnEnable()
     {
         t = 0;
+        mainCamera = Camera.main;
     }
 
     // Update is called once per frame
     void Update()
     {
         Move();
+        Bounds();
 
         LinearMovement bullet;
         while (t <= 0)
@@ -36,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
 
             bullet.initialPosition = barrel.position;
             bullet.spawnTime = Time.time + t;
+            bullet.orientation = this.transform.up;
 
             bullet.gameObject.SetActive(true);
 
@@ -46,22 +59,76 @@ public class PlayerMovement : MonoBehaviour
     }
     void Move()
     {
+        this.GetComponent<Animator>().SetInteger("state", PLAYER_IDLE);
+        Vector3 upVector = this.transform.up;
+        Vector3 rightVector = this.transform.right;
         if (Input.GetKey(KeyCode.W))
         {
-            this.transform.position += Vector3.up * speed * Time.deltaTime;
+            this.transform.position += upVector * speed * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            this.transform.position += Vector3.down * speed * Time.deltaTime;
+            this.transform.position -= upVector * speed * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            this.transform.position += Vector3.left * speed * Time.deltaTime;
+            this.GetComponent<Animator>().SetInteger("state", PLAYER_LEFT);
+            this.transform.position -= rightVector * speed * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.D))
         {
-            this.transform.position += Vector3.right * speed * Time.deltaTime;
+            this.GetComponent<Animator>().SetInteger("state", PLAYER_RIGHT);
+            this.transform.position += rightVector * speed * Time.deltaTime;
         }
+        if (Input.GetKey(KeyCode.Q))
+        {
+            Vector3 currentRotation = this.transform.rotation.eulerAngles;
+            currentRotation.z += rotationSpeed * Time.deltaTime;
+            this.transform.rotation = Quaternion.Euler(currentRotation);
+        }
+        if(Input.GetKey(KeyCode.E))
+        {
+            Vector3 currentRotation = this.transform.rotation.eulerAngles;
+            currentRotation.z -= rotationSpeed * Time.deltaTime;
+            this.transform.rotation = Quaternion.Euler(currentRotation);
+        }
+    }
+
+    private void Bounds()
+    {
+        Vector3 positionOnScreen = mainCamera.WorldToScreenPoint(this.transform.position);
+        if (positionOnScreen.y < 0)
+        {
+            positionOnScreen.y = 0;
+        }
+        else if (positionOnScreen.y > Screen.height)
+        {
+            positionOnScreen.y = Screen.height;
+        }
+
+        if (screenWrap)
+        {
+            if (positionOnScreen.x < 0)
+            {
+                positionOnScreen.x = Screen.width - 1;
+            }
+            else if (positionOnScreen.x > Screen.width)
+            {
+                positionOnScreen.x = 1;
+            }
+        }
+        else
+        {
+            if (positionOnScreen.x < 0)
+            {
+                positionOnScreen.x = 0;
+            }
+            else if (positionOnScreen.x > Screen.width)
+            {
+                positionOnScreen.x = Screen.width;
+            }
+        }
+        this.transform.position = mainCamera.ScreenToWorldPoint(positionOnScreen);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
