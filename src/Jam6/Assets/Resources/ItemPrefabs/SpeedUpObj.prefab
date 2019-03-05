@@ -102,7 +102,7 @@ MonoBehaviour:
   ySpeed: -1
   xSpeed: 1
   xDistance: 3
-  xConstraint: 2.5
+  xConstraint: 6
 --- !u!212 &212414926627936520
 SpriteRenderer:
   m_ObjectHideFlags: 1

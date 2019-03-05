@@ -8,6 +8,13 @@ using UnityEngine;
 public struct MathUtility
 {
     public static readonly float sqrt2 = Mathf.Sqrt(2);
+    public static readonly Vector3[] orientations = new Vector3[360];
+
+    public static void Initialize()
+    {
+        for (int a = 0; a < 360; a++)
+            orientations[a] = Quaternion.Euler(0, 0, a) * Vector3.right;
+    }
 
     public static int ManhattanDistance(int xA, int yA, int xB, int yB)
     {
@@ -67,5 +74,10 @@ public struct MathUtility
     public static float CubicCurve2(float x)
     {
         return (Mathf.Pow(4 * x - 2, 3) + 8) / 16;
+    }
+
+    public static Vector3 GetOrientation(int angle)
+    {
+        return orientations[angle % 360];
     }
 }

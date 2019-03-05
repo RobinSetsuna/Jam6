@@ -53,7 +53,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d02af1a4efd445fb94dc3bff16c86ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifespan: 5
+  id: -1
+  lifeSpan: -1
 --- !u!114 &114755085324893612
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -62,10 +63,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1940127579870138}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1560ffcdc1a6345a6b18898e7887bd03, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a47b9db096479840af83ab53f4e2ee3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  id: -1
+  lifeSpan: -1
+  isFriendly: 0
+  numHits: 1
+  rawDamage: 0
 --- !u!212 &212266944283150622
 SpriteRenderer:
   m_ObjectHideFlags: 1

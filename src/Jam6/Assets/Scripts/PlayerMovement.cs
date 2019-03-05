@@ -1,25 +1,26 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-
     public float speed = 2.0f;
     public ItemDataManager dataManager;
     public float fireInterval = 2.0f;
     public float speedUpTime = 3.0f;
     public float smallInterval = 3.0f;
     public float shieldInterval = 3.0f;
-    public GameObject bullet;
-    private float previousTime;
+
+    [SerializeField] private Transform barrel;
+    [SerializeField] private int bulletID = 0;
+
+    private float t = 0;
+
     private bool isSmall = false;
 
-
     // Use this for initialization
-    void Start()
+    void OnEnable()
     {
-        previousTime = Time.time;
+        t = 0;
     }
 
     // Update is called once per frame
@@ -27,15 +28,23 @@ public class PlayerMovement : MonoBehaviour
     {
         Move();
 
-        if ((Time.time - previousTime) > fireInterval)
+        LinearMovement bullet;
+        while (t <= 0)
         {
-            Shooting();
-            previousTime = Time.time;
+            bullet = ObjectRecycler.Singleton.GetObject<LinearMovement>(bulletID);
+
+            bullet.initialPosition = barrel.position;
+            bullet.spawnTime = Time.time + t;
+
+            bullet.gameObject.SetActive(true);
+
+            t += fireInterval;
         }
+
+        t -= Time.deltaTime;
     }
     void Move()
     {
-
         if (Input.GetKey(KeyCode.W))
         {
             this.transform.position += Vector3.up * speed * Time.deltaTime;
@@ -56,8 +65,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //Detect if collision of items happen
-        Debug.Log("Collision:" + collision.gameObject.tag.ToString());
+        // Detect if collision of items happen
+        //Debug.Log("Collision:" + collision.gameObject.tag.ToString());
+
         if (collision.gameObject.tag.Equals("HealObj"))
         {
             Debug.Log("Collision:" + collision.gameObject.tag.ToString());
@@ -83,11 +93,6 @@ public class PlayerMovement : MonoBehaviour
             dataManager.WithShield(collision);
             StartCoroutine(ArmWithShield());
         }
-    }
-    void Shooting()
-    {
-        GameObject BulletPrefab = ObjectPool.GetInstance().GetObj("Bullet", this.transform.position + Vector3.up * 2.0f);
-
     }
 
     IEnumerator SpeedUpFireInterval()
@@ -115,4 +120,13 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(shieldInterval);
         Debug.Log("No Shield");
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        if (barrel)
+            Gizmos.DrawSphere(barrel.position, 0.1f);
+    }
+#endif
 }
