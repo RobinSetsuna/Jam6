@@ -26,4 +26,13 @@ public class LinearMovement : Movement
     {
 		transform.position = initialPosition + (Time.time - spawnTime) * orientation * speed;
 	}
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(transform.position, 0.2f);
+        Gizmos.DrawLine(transform.position, transform.position + orientation.normalized);
+    }
+#endif
 }

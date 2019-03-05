@@ -3,8 +3,9 @@ using UnityEngine;
 
 public class BrainBoss : Enemy
 {
-    [SerializeField] GameObject leftLaser;
-    [SerializeField] GameObject rightLaser;
+    [SerializeField] private GameObject leftLaser;
+    [SerializeField] private GameObject rightLaser;
+    [SerializeField] private float fireInterval = 2f;
 
     private Vector3 orientation;
 
@@ -56,7 +57,7 @@ public class BrainBoss : Enemy
                 switch (currentState)
                 {
                     case 1:
-                        CurrentState = 2;
+                        orientation = Vector3.down;
                         break;
 
 
@@ -186,7 +187,7 @@ public class BrainBoss : Enemy
         Recyclable bullet;
         LinearMovement bulletMovement;
 
-        if (Time.time - tf1 > 2f)
+        while (tf1 <= 0)
         {
             int r = Random.Range(0, 30);
             for (int o = r; o < 360 + r; o += 30)
@@ -197,17 +198,27 @@ public class BrainBoss : Enemy
                 bulletMovement.initialPosition = transform.position;
                 bulletMovement.orientation = MathUtility.GetOrientation(o);
                 bulletMovement.speed = 7;
+                bulletMovement.spawnTime = Time.time + tf1;
                 bullet.gameObject.SetActive(true);
             }
 
-            tf1 = Time.time;
+            tf1 += fireInterval;
         }
+
+        tf1 -= Time.deltaTime;
 
         if (Mathf.FloorToInt(hp / maxHp * 99) % 10 == 0)
             CurrentState = 6;
 
         switch (currentState)
         {
+            case 1:
+                transform.position += orientation * speed * Time.deltaTime;
+                if (transform.position.y - 6f < 0.1f)
+                    CurrentState = 2;
+                break;
+
+
             case 2:
                 if (Time.time - tf2 > 0.02f)
                 {
@@ -230,24 +241,24 @@ public class BrainBoss : Enemy
                 break;
 
 
-            case 3:
-                {
-                    float dx = Player.Singleton.transform.position.x - transform.position.x;
+            //case 3:
+            //    {
+            //        float dx = Player.Singleton.transform.position.x - transform.position.x;
 
-                    Vector3 v;
-                    if (dx < -3f)
-                        v = Vector3.left;
-                    else if (dx > 3f)
-                        v = Vector3.right;
-                    else
-                        v = orientation;
+            //        Vector3 v;
+            //        if (dx < -3f)
+            //            v = Vector3.left;
+            //        else if (dx > 3f)
+            //            v = Vector3.right;
+            //        else
+            //            v = orientation;
 
-                    transform.Translate(v * speed / 2 * Time.deltaTime);
-                }
+            //        transform.Translate(v * speed / 2 * Time.deltaTime);
+            //    }
 
-                if (t > 3)
-                    CurrentState = Random.Range(1, 4) * 2;
-                break;
+            //    if (t > 3)
+            //        CurrentState = Random.Range(1, 4) * 2;
+            //    break;
 
 
             case 4:

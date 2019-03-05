@@ -29,7 +29,7 @@ public class ObjectRecycler : MonoBehaviour
         if (recycledObjects[id].Count > 0)
             return recycledObjects[id].Pop().GetComponent<T>();
 
-        T obj = Instantiate(prefabs[id].GetComponent<T>(), recyclePosition, Quaternion.identity, transform);
+        T obj = Instantiate(prefabs[id].GetComponent<T>(), recyclePosition, Quaternion.identity, transform.GetChild(id));
 
         if (obj)
             obj.GetComponent<Recyclable>().id = id;
@@ -57,8 +57,14 @@ public class ObjectRecycler : MonoBehaviour
 
             recycledObjects = new Stack<Recyclable>[prefabs.Length];
 
+            GameObject child;
             for (int id = 0; id < recycledObjects.Length; id++)
+            {
                 recycledObjects[id] = new Stack<Recyclable>(256);
+                child = new GameObject();
+                child.name = id.ToString();
+                child.transform.parent = transform;
+            }
         }
         else if (this != Singleton)
             Destroy(gameObject);
