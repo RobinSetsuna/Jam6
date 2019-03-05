@@ -136,7 +136,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1378540021582548}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 6, z: 0}
+  m_LocalPosition: {x: 0, y: 15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4249651486234580}
@@ -370,10 +370,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: -1
   lifeSpan: -1
-  maxHp: 1000
+  maxHp: 100000
   speed: 1.5
   leftLaser: {fileID: 1593044998923106}
   rightLaser: {fileID: 1064420767487420}
+  fireInterval: 2
 --- !u!114 &114945150198599328
 MonoBehaviour:
   m_ObjectHideFlags: 1

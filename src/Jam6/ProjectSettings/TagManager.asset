@@ -12,6 +12,7 @@ TagManager:
   - SmallObj
   - Enemy
   - Bullet
+  - Wing
   layers:
   - Default
   - TransparentFX

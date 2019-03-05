@@ -148,7 +148,7 @@ MonoBehaviour:
   lifeSpan: 2
   isFriendly: 0
   numHits: 1
-  rawDamage: 5
+  rawDamage: 300
 --- !u!212 &212748169455769566
 SpriteRenderer:
   m_ObjectHideFlags: 1

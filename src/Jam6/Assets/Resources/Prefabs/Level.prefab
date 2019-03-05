@@ -4159,7 +4159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: -1
   lifeSpan: 0
-  maxHp: 100
+  maxHp: 5000
   speed: 3
   fireInterval: 5
   bulletID: 6

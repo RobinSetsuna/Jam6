@@ -4,9 +4,35 @@ public class Player : MonoBehaviour, IDamageable
 {
     public static Player Singleton { get; private set; }
 
-    public float ApplyDamage(float rawDamage)
+    [SerializeField] private int maxHp = 0;
+    [SerializeField] private int maxSp = 10000;
+
+    private int hp;
+    private int sp;
+
+    public int ApplyDamage(int rawDamage)
     {
+        int absorbedDamage = Mathf.Min(rawDamage, sp / 10);
+
+        sp -= absorbedDamage * 10;
+        rawDamage -= absorbedDamage;
+        hp -= rawDamage;
+
+        if (rawDamage > 0 && hp <= 0)
+        {
+
+        }
+
         return rawDamage;
+    }
+
+    public int GainEnergy(int rawEnergy)
+    {
+        int sp0 = sp;
+
+        sp = Mathf.Min(maxSp, sp + rawEnergy);
+
+        return sp - sp0;
     }
 
     private void Awake()

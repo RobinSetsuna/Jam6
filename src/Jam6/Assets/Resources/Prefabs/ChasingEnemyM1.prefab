@@ -109,7 +109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 11
   lifeSpan: 0
-  maxHp: 30
+  maxHp: 2000
   speed: 5
   initialPosition: {x: 0, y: 0, z: 0}
   targetPosition: {x: 0, y: 0, z: 0}
