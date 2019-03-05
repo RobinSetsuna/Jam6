@@ -82,9 +82,12 @@ public class GameManager : MonoBehaviour
             else
             {
                 // Before leaving the previous state
-                //switch (currentGameState)
-                //{
-                //}
+                switch (currentGameState)
+                {
+                    case GameState.Start:
+                        GUIManager.Singleton.Close("MainMenu");
+                        break;
+                }
 
 #if UNITY_EDITOR
                 Debug.Log(LogUtility.MakeLogStringFormat("GameManager", "Made a transition to {0}.", value));
@@ -100,12 +103,13 @@ public class GameManager : MonoBehaviour
                 {
                     case GameState.Start:
                         MathUtility.Initialize();
-                        CurrentGameState = GameState.LoadLevel;
+                        GUIManager.Singleton.Open("MainMenu");
                         break;
 
 
                     case GameState.LoadLevel:
                         level = Instantiate(ResourceUtility.GetPrefab<LinearMovement>("Level"));
+                        Instantiate(ResourceUtility.GetPrefab("Player")).SetActive(true);
                         spawnQueue.Enqueue(new SpawnData(12, 10, new Vector3(-4, 15, 0), new Vector3(-4, 5, 0)));
                         GUIManager.Singleton.Open("HUD");
                         CurrentGameState = GameState.Level;
@@ -132,6 +136,11 @@ public class GameManager : MonoBehaviour
     }
 
     private GameManager() { }
+
+    public void StartLevel()
+    {
+        CurrentGameState = GameState.LoadLevel;
+    }
 
     /// <summary>
     /// Quit the game
