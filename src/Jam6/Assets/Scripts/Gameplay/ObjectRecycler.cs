@@ -5,6 +5,8 @@ public class ObjectRecycler : MonoBehaviour
 {
     public static ObjectRecycler Singleton { get; private set; }
 
+    private static Vector3 recyclePosition = Vector3.one * -100;
+
     [SerializeField] private Recyclable[] prefabs;
 
     private Stack<Recyclable>[] recycledObjects;
@@ -27,7 +29,7 @@ public class ObjectRecycler : MonoBehaviour
         if (recycledObjects[id].Count > 0)
             return recycledObjects[id].Pop().GetComponent<T>();
 
-        T obj = Instantiate(prefabs[id].GetComponent<T>(), transform);
+        T obj = Instantiate(prefabs[id].GetComponent<T>(), recyclePosition, Quaternion.identity, transform);
 
         if (obj)
             obj.GetComponent<Recyclable>().id = id;
@@ -38,7 +40,12 @@ public class ObjectRecycler : MonoBehaviour
     public void Recycle(Recyclable recyclable)
     {
         if (recyclable.id >= 0)
+        {
+            recyclable.transform.position = recyclePosition;
             recycledObjects[recyclable.id].Push(recyclable);
+        }
+        else
+            Destroy(recyclable.gameObject);
     }
 
     private void Awake()

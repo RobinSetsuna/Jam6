@@ -1,12 +1,10 @@
 ﻿using UnityEngine;
 
-public abstract class Hover : Enemy
+public abstract class Turrent : Enemy
 {
-    public Vector3 initialPosition;
-    public Vector3 targetPosition;
+    [SerializeField] private float fireInterval = 5f;
 
-    private Vector3 orientation;
-    private float t0;
+    private float t;
 
     protected override int CurrentState
     {
@@ -21,7 +19,7 @@ public abstract class Hover : Enemy
             if (value == currentState)
             {
 #if UNITY_EDITOR
-                Debug.Log(LogUtility.MakeLogStringFormat("Hover", "Reset {0}.", value));
+                //Debug.Log(LogUtility.MakeLogStringFormat("Hover", "Reset {0}.", value));
 #endif
 
                 //switch (currentState)
@@ -36,7 +34,7 @@ public abstract class Hover : Enemy
                 //}
 
 #if UNITY_EDITOR
-                Debug.Log(LogUtility.MakeLogStringFormat("Hover", "Made a transition to state {0}.", value));
+                //Debug.Log(LogUtility.MakeLogStringFormat("Hover", "Made a transition to state {0}.", value));
 #endif
 
                 currentState = value;
@@ -45,9 +43,11 @@ public abstract class Hover : Enemy
                 switch (currentState)
                 {
                     case 1:
-                        orientation = (targetPosition - initialPosition).normalized;
-                        transform.up = orientation;
-                        t0 = Time.time;
+                        transform.up = Vector3.down;
+                        break;
+
+                    case 2:
+                        t = fireInterval;
                         break;
                 }
 
@@ -65,15 +65,24 @@ public abstract class Hover : Enemy
         switch (currentState)
         {
             case 1:
-                transform.position = initialPosition + orientation * speed * (Time.time - t0);
-                if ((transform.position - targetPosition).sqrMagnitude < 0.1f)
+                if (transform.position.y < 10)
                     CurrentState = 2;
                 break;
 
 
             case 2:
+                t -= Time.deltaTime;
+
                 transform.up = Player.Singleton.transform.position - transform.position;
-                Shoot();
+
+                while (t <= 0)
+                {
+                    Shoot();
+                    t += fireInterval;
+                }
+
+                if (transform.position.y < -10)
+                    Die();
                 break;
         }
     }

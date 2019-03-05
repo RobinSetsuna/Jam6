@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class HoverEnemyS1 : Hover
+public class HoverEnemyS1 : HoverEnemy
 {
     [SerializeField] private float fireInterval = 0.5f;
     [SerializeField] private int bulletID = 3;

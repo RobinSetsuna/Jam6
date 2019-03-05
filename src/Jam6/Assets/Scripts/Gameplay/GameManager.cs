@@ -2,6 +2,7 @@
  * @author SerapH
  */
 
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -12,6 +13,24 @@ public enum GameState : int
     Start = 1,
     LoadLevel = 2,
     Level = 3,
+    BeforeBoss = 4,
+    Boss = 5,
+}
+
+public struct SpawnData
+{
+    public int id;
+    public float spawnTime;
+    public Vector3 initialPosition;
+    public Vector3 targetPosition;
+
+    public SpawnData(int id, float spawnTime, Vector3 initialPosition, Vector3 targetPosition)
+    {
+        this.id = id;
+        this.spawnTime = spawnTime;
+        this.initialPosition = initialPosition;
+        this.targetPosition = targetPosition;
+    }
 }
 
 /// <summary>
@@ -33,9 +52,9 @@ public class GameManager : MonoBehaviour
 
     private GameState currentGameState;
 
+    private LinearMovement level;
+    private Queue<SpawnData> spawnQueue = new Queue<SpawnData>();
     private float playTime;
-
-    bool temp = false;
 
     /// <summary>
     /// The current state of the game
@@ -49,8 +68,6 @@ public class GameManager : MonoBehaviour
 
         private set
         {
-
-
             // Reset the current state
             if (value == currentGameState)
             {
@@ -86,13 +103,27 @@ public class GameManager : MonoBehaviour
                         CurrentGameState = GameState.LoadLevel;
                         break;
 
+
                     case GameState.LoadLevel:
-                        Instantiate(ResourceUtility.GetPrefab("Level"));
+                        level = Instantiate(ResourceUtility.GetPrefab<LinearMovement>("Level"));
+                        spawnQueue.Enqueue(new SpawnData(12, 10, new Vector3(-4, 15, 0), new Vector3(-4, 5, 0)));
                         CurrentGameState = GameState.Level;
                         break;
 
+
                     case GameState.Level:
                         playTime = 0;
+                        break;
+
+
+                    case GameState.BeforeBoss:
+                        playTime = 0;
+                        break;
+
+
+                    case GameState.Boss:
+                        level.enabled = false;
+                        Instantiate(ResourceUtility.GetPrefab("FinalBoss")).SetActive(true);
                         break;
                 }
             }
@@ -133,6 +164,7 @@ public class GameManager : MonoBehaviour
         {
             case GameState.Level:
                 playTime += Time.deltaTime;
+
                 if (Random.Range(0f, 1000f) < 10)
                 {
                     int r = Random.Range(0, 100);
@@ -141,7 +173,7 @@ public class GameManager : MonoBehaviour
                     if (r < 80)
                         id = 8;
 
-                    Hover hoverEnemy = ObjectRecycler.Singleton.GetObject<Hover>(id);
+                    HoverEnemy hoverEnemy = ObjectRecycler.Singleton.GetObject<HoverEnemy>(id);
 
                     float x = Random.Range(-5f, 5f);
                     float y = Random.Range(-2f, 8f);
@@ -150,15 +182,27 @@ public class GameManager : MonoBehaviour
                     hoverEnemy.targetPosition = new Vector3(x, y, 0);
 
                     hoverEnemy.gameObject.SetActive(true);
+                }
 
-                    Debug.Log(111);
-                }
-                if(playTime > 15f && temp == false)
+                while (spawnQueue.Count > 0 && playTime >= spawnQueue.Peek().spawnTime)
                 {
-                    var boss = Instantiate(ResourceUtility.GetPrefab("FinalBoss"));
-                    boss.SetActive(true);
-                    temp = true;
+                    SpawnData spawnData = spawnQueue.Dequeue();
+
+                    ChasingEnemy enemy = ObjectRecycler.Singleton.GetObject<ChasingEnemy>(spawnData.id);
+                    enemy.initialPosition = spawnData.initialPosition;
+                    enemy.targetPosition = spawnData.targetPosition;
+
+                    enemy.gameObject.SetActive(true);
                 }
+
+                if (level.transform.position.y < -50)
+                    CurrentGameState = GameState.BeforeBoss;
+                break;
+
+
+            case GameState.BeforeBoss:
+                if (level.transform.position.y < -57)
+                    CurrentGameState = GameState.Boss;
                 break;
         }
     }

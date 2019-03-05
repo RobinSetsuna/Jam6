@@ -5,8 +5,7 @@ public class LinearMovement : Movement
     public float speed;
     public Vector3 orientation;
     public Vector3 initialPosition;
-
-    private float t0;
+    public float spawnTime;
 
     private void OnEnable()
     {
@@ -14,11 +13,17 @@ public class LinearMovement : Movement
         transform.up = orientation;
         transform.position = initialPosition;
 
-        t0 = Time.time;
+        if (spawnTime == 0)
+            spawnTime = Time.time;
+    }
+
+    private void OnDisable()
+    {
+        spawnTime = 0;
     }
 
     private void Update()
     {
-		transform.position = initialPosition + (Time.time - t0) * orientation * speed;
+		transform.position = initialPosition + (Time.time - spawnTime) * orientation * speed;
 	}
 }

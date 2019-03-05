@@ -117,7 +117,7 @@ public class BrainBoss : Enemy
         for (int o = r; o < R1; o += 10)
         {
             bullet = ObjectRecycler.Singleton.GetObject(2);
-            bullet.lifeSpan = 15;
+            bullet.lifeSpan = 20;
             bulletMovement = bullet.GetComponent<LinearMovement>();
             bulletMovement.initialPosition = transform.position;
             bulletMovement.orientation = MathUtility.GetOrientation(o);
@@ -128,7 +128,7 @@ public class BrainBoss : Enemy
         for (int o = r; o < R1; o += 10)
         {
             bullet = ObjectRecycler.Singleton.GetObject(2);
-            bullet.lifeSpan = 7;
+            bullet.lifeSpan = 10;
             bulletMovement = bullet.GetComponent<LinearMovement>();
             bulletMovement.initialPosition = transform.position;
             bulletMovement.orientation = MathUtility.GetOrientation(o);
@@ -139,7 +139,7 @@ public class BrainBoss : Enemy
         for (int o = r; o < R1; o += 10)
         {
             bullet = ObjectRecycler.Singleton.GetObject(2);
-            bullet.lifeSpan = 5;
+            bullet.lifeSpan = 7;
             bulletMovement = bullet.GetComponent<LinearMovement>();
             bulletMovement.initialPosition = transform.position;
             bulletMovement.orientation = MathUtility.GetOrientation(o);
@@ -152,7 +152,7 @@ public class BrainBoss : Enemy
         for (int o = r + 5; o < R2; o += 10)
         {
             bullet = ObjectRecycler.Singleton.GetObject(2);
-            bullet.lifeSpan = 10;
+            bullet.lifeSpan = 14;
             bulletMovement = bullet.GetComponent<LinearMovement>();
             bulletMovement.initialPosition = transform.position;
             bulletMovement.orientation = MathUtility.GetOrientation(o);
@@ -163,7 +163,7 @@ public class BrainBoss : Enemy
         for (int o = r + 5; o < R2; o += 10)
         {
             bullet = ObjectRecycler.Singleton.GetObject(2);
-            bullet.lifeSpan = 6;
+            bullet.lifeSpan = 8;
             bulletMovement = bullet.GetComponent<LinearMovement>();
             bulletMovement.initialPosition = transform.position;
             bulletMovement.orientation = MathUtility.GetOrientation(o);
@@ -192,19 +192,19 @@ public class BrainBoss : Enemy
             for (int o = r; o < 360 + r; o += 30)
             {
                 bullet = ObjectRecycler.Singleton.GetObject(2);
-                bullet.lifeSpan = 5;
+                bullet.lifeSpan = 3;
                 bulletMovement = bullet.GetComponent<LinearMovement>();
                 bulletMovement.initialPosition = transform.position;
-                bulletMovement.orientation = MathUtility.GetOrientation(r);
-                bulletMovement.speed = 3;
+                bulletMovement.orientation = MathUtility.GetOrientation(o);
+                bulletMovement.speed = 7;
                 bullet.gameObject.SetActive(true);
             }
 
             tf1 = Time.time;
         }
 
-        //if (Mathf.FloorToInt(hp / maxHp * 99) % 25 == 0)
-        //    CurrentState = 3;
+        if (Mathf.FloorToInt(hp / maxHp * 99) % 10 == 0)
+            CurrentState = 6;
 
         switch (currentState)
         {
@@ -212,7 +212,7 @@ public class BrainBoss : Enemy
                 if (Time.time - tf2 > 0.02f)
                 {
                     bullet = ObjectRecycler.Singleton.GetObject(2);
-                    bullet.lifeSpan = 3;
+                    bullet.lifeSpan = 4;
                     bulletMovement = bullet.GetComponent<LinearMovement>();
                     bulletMovement.initialPosition = transform.position;
                     bulletMovement.orientation = MathUtility.GetOrientation(of1);
@@ -261,15 +261,15 @@ public class BrainBoss : Enemy
 
 
             case 5:
-                if (Time.time - tf3 > 1f)
+                if (t < 8 && Time.time - tf3 > 1.5f)
                 {
                     int r = 180 + Random.Range(23, 37) * 3;
 
-                    for (int o = 180; o <= 360; o += 3)
-                        if (Mathf.Abs(o - r) > 6)
+                    for (int o = 180; o <= 360; o += 2)
+                        if (Mathf.Abs(o - r) > 4)
                         {
                             bullet = ObjectRecycler.Singleton.GetObject(2);
-                            bullet.lifeSpan = 7;
+                            bullet.lifeSpan = 10;
                             bulletMovement = bullet.GetComponent<LinearMovement>();
                             bulletMovement.initialPosition = transform.position;
                             bulletMovement.orientation = MathUtility.GetOrientation(o);
@@ -280,8 +280,8 @@ public class BrainBoss : Enemy
                     tf3 = Time.time;
                 }
 
-                if (t > 5)
-                    CurrentState = 7;
+                if (t > 10)
+                    CurrentState = 2;
                 break;
 
 

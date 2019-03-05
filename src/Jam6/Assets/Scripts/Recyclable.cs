@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class Recyclable : MonoBehaviour
 {
-    private static Vector3 recyclePosition = Vector3.one * -100;
-
     public int id = -1;
     public float lifeSpan = 0;
 
@@ -17,7 +15,6 @@ public class Recyclable : MonoBehaviour
     protected void Die()
     {
         StopAllCoroutines();
-        transform.position = recyclePosition;
         gameObject.SetActive(false);
         ObjectRecycler.Singleton.Recycle(this);
     }
@@ -25,7 +22,6 @@ public class Recyclable : MonoBehaviour
     private IEnumerator RecycleAfter(float t)
     {
         yield return new WaitForSeconds(t);
-
         Die();
     }
 }
