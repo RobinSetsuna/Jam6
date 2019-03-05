@@ -112,6 +112,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4269056329863238}
   - component: {fileID: 212108416205243750}
+  - component: {fileID: 95863650569009216}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -206,7 +207,6 @@ GameObject:
   - component: {fileID: 61923386667264080}
   - component: {fileID: 114733940693092304}
   - component: {fileID: 114387266794977532}
-  - component: {fileID: 95779364426250112}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -524,13 +524,13 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.3, y: 0.7}
   m_EdgeRadius: 0
---- !u!95 &95779364426250112
+--- !u!95 &95863650569009216
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1906838524707806}
+  m_GameObject: {fileID: 1473402734209960}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: b1cefe7e90319f4419b7b17ee1849e21, type: 2}
@@ -555,10 +555,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   rotationSpeed: 250
-  dataManager: {fileID: 0}
+  minX: -8
+  maxX: 8
+  minY: -10
+  maxY: 10
+  enableTurning: 0
+  screenWrap: 0
   speedUpTime: 3
   smallInterval: 3
   shieldInterval: 3
+  dataManager: {fileID: 0}
+  animator: {fileID: 95863650569009216}
   barrels:
   - {fileID: 4282564991073808}
   - {fileID: 4719957111776192}
@@ -569,7 +576,6 @@ MonoBehaviour:
   - {fileID: 4347970684565312}
   - {fileID: 4305758035430016}
   - {fileID: 4525657256756586}
-  screenWrap: 0
 --- !u!114 &114733940693092304
 MonoBehaviour:
   m_ObjectHideFlags: 1
