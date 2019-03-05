@@ -2,7 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemDataManager : MonoBehaviour {
+public class ItemDataManager : MonoBehaviour
+{
+    /// <summary>
+    /// The unique instance
+    /// </summary>
+    public static ItemDataManager Singleton { get; private set; }
+
     [SerializeField] private float playerHealth = 10.0f;
     public float maxHealth = 15.0f;
     public float intervalOfHealOBj = 5.0f;
@@ -11,7 +17,6 @@ public class ItemDataManager : MonoBehaviour {
     public float intervalOfShieldObj = 5.0f;
     //public GameObject healObjPrefab;
 
-
     public float xConstraint = 8f;
     private float yConstraint = 8f;
     private float previousTimeHeal;
@@ -19,8 +24,75 @@ public class ItemDataManager : MonoBehaviour {
     private float previousSmall;
     private float previousShield;
 
-    // Use this for initialization
-    void Start () {
+    public void AddHealth(Collider2D collision)
+    {
+        if (playerHealth < maxHealth)
+        {
+            playerHealth++;
+            ObjectPool.GetInstance().RecycleObj(collision.gameObject);
+        }
+    }
+    public void SpeedUp(Collider2D collision)
+    {
+        ObjectPool.GetInstance().RecycleObj(collision.gameObject);
+    }
+    public void BecomeSmall(Collider2D collision)
+    {
+        ObjectPool.GetInstance().RecycleObj(collision.gameObject);
+
+    }
+    public void WithShield(Collider2D collision)
+    {
+        ObjectPool.GetInstance().RecycleObj(collision.gameObject);
+    }
+
+    public void InstantiateHealObj()
+    {
+        InstantiateItem(16);
+    }
+    public void InstantiateSpeedUpObj()
+    {
+        InstantiateItem(17);
+    }
+    public void InstantiateSmallObj()
+    {
+        InstantiateItem(18);
+    }
+    public void InstantiateShieldObj()
+    {
+        InstantiateItem(19);
+    }
+
+    public void InstantiateItem(int id)
+    {
+        ObjMovement item = ObjectRecycler.Singleton.GetObject<ObjMovement>(id);
+        item.orientation = MathUtility.GetOrientation(Random.Range(225, 315));
+        item.transform.position = new Vector3(Random.Range(-xConstraint, xConstraint), yConstraint + 3, 0f);
+        item.gameObject.SetActive(true);
+    }
+
+    public void InstantiateWeapon(int id, Vector3 position)
+    {
+        //GameObject HealObjPrefab = ObjectPool.GetInstance().GetObj("SheildObj", new Vector3(Random.Range((-1.0f) * xConstraint, xConstraint), yConstraint, 0.0f));
+        ObjMovement item = ObjectRecycler.Singleton.GetObject<ObjMovement>(id);
+        item.orientation = MathUtility.GetOrientation(Random.Range(225, 315));
+        item.transform.position = position;
+        item.gameObject.SetActive(true);
+    }
+
+    private void Awake()
+    {
+        if (!Singleton)
+        {
+            Singleton = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else if (this != Singleton)
+            Destroy(gameObject);
+    }
+
+    private void Start()
+    {
         //
         //GameObject HealObj = ObjectPool.GetInstance().GetObj("HealObj", new Vector3(Random.Range((-1.0f) * xConstraint, xConstraint), yConstraint, 0.0f));
 
@@ -28,7 +100,8 @@ public class ItemDataManager : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	private void Update()
+    {
 		if((Time.time - previousTimeHeal)> intervalOfHealOBj)
         {
             InstantiateHealObj();
@@ -50,51 +123,4 @@ public class ItemDataManager : MonoBehaviour {
             previousShield = Time.time;
         }
     }
-    public void AddHealth(Collider2D collision)
-    {
-        if(playerHealth < maxHealth) {
-            playerHealth++;
-            ObjectPool.GetInstance().RecycleObj(collision.gameObject);
-        }
-    }
-    public void SpeedUp(Collider2D collision)
-    {
-        ObjectPool.GetInstance().RecycleObj(collision.gameObject);
-    }
-    public void BecomeSmall(Collider2D collision) 
-    {
-        ObjectPool.GetInstance().RecycleObj(collision.gameObject);
-
-    }
-    public void WithShield(Collider2D collision)
-    {
-        ObjectPool.GetInstance().RecycleObj(collision.gameObject);
-    }
-
-    void InstantiateHealObj()
-    {
-        GameObject HealObjPrefab = ObjectPool.GetInstance().GetObj("HealObj", new Vector3(Random.Range((-1.0f) * xConstraint, xConstraint), yConstraint, 0.0f));
-        //HealObjPrefab.transform.position = new Vector3(Random.Range((-1.0f) * xConstraint, xConstraint), yConstraint, 0.0f);
-      
-    }
-    void InstantiateSpeedUpObj()
-    {
-        GameObject HealObjPrefab = ObjectPool.GetInstance().GetObj("SpeedUpObj", new Vector3(Random.Range((-1.0f) * xConstraint, xConstraint), yConstraint, 0.0f));
-
-    }
-    void InstantiateSmallObj()
-    {
-        GameObject HealObjPrefab = ObjectPool.GetInstance().GetObj("SmallObj", new Vector3(Random.Range((-1.0f) * xConstraint, xConstraint), yConstraint, 0.0f));
-
-    }
-    void InstantiateShieldObj()
-    {
-        GameObject HealObjPrefab = ObjectPool.GetInstance().GetObj("SheildObj", new Vector3(Random.Range((-1.0f) * xConstraint, xConstraint), yConstraint, 0.0f));
-
-    }
-
-
-
-
-
 }

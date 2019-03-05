@@ -4161,6 +4161,7 @@ MonoBehaviour:
   lifeSpan: 0
   maxHp: 5000
   speed: 3
+  lootChance: 100
   fireInterval: 5
   bulletID: 6
   bulletInterval: 0.03

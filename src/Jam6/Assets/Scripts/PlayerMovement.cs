@@ -13,11 +13,6 @@ public class PlayerMovement : MonoBehaviour
     public bool enableTurning = false;
     public bool screenWrap = false;
 
-    [Header("Item Setting")]
-    public float speedUpTime = 3.0f;
-    public float smallInterval = 3.0f;
-    public float shieldInterval = 3.0f;
-
     [Header("References")]
     [SerializeField] private ItemDataManager dataManager;
     [SerializeField] private Animator animator;
@@ -45,9 +40,9 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         Move();
-        Bounds();
+        //Bounds();
 
-        Player.Singleton.MainWeapon.Fire(ref t, transform.up, barrels, Player.Singleton.Energy);
+        Player.Singleton.MainWeapon.Fire(ref t, transform.up, barrels, Player.Singleton.Energy, Player.Singleton.FireIntervalFactor);
 
         t -= Time.deltaTime;
     }
@@ -89,99 +84,41 @@ public class PlayerMovement : MonoBehaviour
 
     private void Bounds()
     {
-        //Vector3 positionOnScreen = mainCamera.WorldToScreenPoint(transform.position);
+        Vector3 positionOnScreen = mainCamera.WorldToScreenPoint(transform.position);
 
-        //if (positionOnScreen.y < 0)
-        //{
-        //    positionOnScreen.y = 0;
-        //}
-        //else if (positionOnScreen.y > Screen.height)
-        //{
-        //    positionOnScreen.y = Screen.height;
-        //}
-
-        //if (screenWrap)
-        //{
-        //    if (positionOnScreen.x < 0)
-        //    {
-        //        positionOnScreen.x = Screen.width - 1;
-        //    }
-        //    else if (positionOnScreen.x > Screen.width)
-        //    {
-        //        positionOnScreen.x = 1;
-        //    }
-        //}
-        //else
-        //{
-        //    if (positionOnScreen.x < 0)
-        //    {
-        //        positionOnScreen.x = 0;
-        //    }
-        //    else if (positionOnScreen.x > Screen.width)
-        //    {
-        //        positionOnScreen.x = Screen.width;
-        //    }
-        //}
-
-        //transform.position = mainCamera.ScreenToWorldPoint(positionOnScreen);
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        // Detect if collision of items happen
-        //Debug.Log("Collision:" + collision.gameObject.tag.ToString());
-
-        if (collision.gameObject.tag.Equals("HealObj"))
+        if (positionOnScreen.y < 0)
         {
-            Debug.Log("Collision:" + collision.gameObject.tag.ToString());
-            dataManager.AddHealth(collision);
+            positionOnScreen.y = 0;
         }
-        else if (collision.gameObject.tag.Equals("SpeedUpObj"))
+        else if (positionOnScreen.y > Screen.height)
         {
-            Debug.Log("Collision:" + collision.gameObject.tag.ToString());
-            dataManager.SpeedUp(collision);
-            StartCoroutine(SpeedUpFireInterval());
-
-        }
-        else if (collision.gameObject.tag.Equals("SmallObj"))
-        {
-            Debug.Log("Collision:" + collision.gameObject.tag.ToString());
-            dataManager.BecomeSmall(collision);
-            StartCoroutine(BecomeSmaller());
-        }
-        else if (collision.gameObject.tag.Equals("ShieldObj"))
-        {
-
-            Debug.Log("Collision:" + collision.gameObject.tag.ToString());
-            dataManager.WithShield(collision);
-            StartCoroutine(ArmWithShield());
-        }
-    }
-
-    IEnumerator SpeedUpFireInterval()
-    {
-        yield return new WaitForSeconds(speedUpTime);
-    }
-
-    IEnumerator BecomeSmaller()
-    {
-        if (!isSmall)
-        {
-            isSmall = true;
-            this.transform.localScale = this.transform.localScale * 0.5f;
-            yield return new WaitForSeconds(smallInterval);
-            this.transform.localScale = this.transform.localScale * 2.0f;
-            isSmall = false;
+            positionOnScreen.y = Screen.height;
         }
 
-    }
+        if (screenWrap)
+        {
+            if (positionOnScreen.x < 0)
+            {
+                positionOnScreen.x = Screen.width - 1;
+            }
+            else if (positionOnScreen.x > Screen.width)
+            {
+                positionOnScreen.x = 1;
+            }
+        }
+        else
+        {
+            if (positionOnScreen.x < 0)
+            {
+                positionOnScreen.x = 0;
+            }
+            else if (positionOnScreen.x > Screen.width)
+            {
+                positionOnScreen.x = Screen.width;
+            }
+        }
 
-    IEnumerator ArmWithShield()
-    {
-        //Bool -> isShield with isShield = flase, the enememy can damage player
-        Debug.Log("Shield");
-        yield return new WaitForSeconds(shieldInterval);
-        Debug.Log("No Shield");
+        transform.position = mainCamera.ScreenToWorldPoint(positionOnScreen);
     }
 
 #if UNITY_EDITOR

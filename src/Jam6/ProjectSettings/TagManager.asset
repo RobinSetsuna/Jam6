@@ -13,6 +13,9 @@ TagManager:
   - Enemy
   - Bullet
   - Wing
+  - Shield
+  - StraightFireWeapon
+  - SplitFireWeapon
   layers:
   - Default
   - TransparentFX

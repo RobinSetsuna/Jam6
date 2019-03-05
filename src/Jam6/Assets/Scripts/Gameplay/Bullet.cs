@@ -31,9 +31,14 @@ public class Bullet : Recyclable
         }
         else if (other.tag == "Player")
         {
-            other.GetComponent<IDamageable>().ApplyDamage(rawDamage);
-            if (--numHitsRemaining == 0)
+            if (Player.Singleton.IsProtected)
                 Die();
+            else
+            {
+                other.GetComponent<IDamageable>().ApplyDamage(rawDamage);
+                if (--numHitsRemaining == 0)
+                    Die();
+            }
         }
         else if (other.tag == "Wing" && hasEnergy)
         {

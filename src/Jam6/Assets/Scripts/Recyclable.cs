@@ -12,7 +12,7 @@ public class Recyclable : MonoBehaviour
             StartCoroutine(RecycleAfter(lifeSpan));
     }
 
-    protected void Die()
+    public void Die()
     {
         StopAllCoroutines();
         gameObject.SetActive(false);

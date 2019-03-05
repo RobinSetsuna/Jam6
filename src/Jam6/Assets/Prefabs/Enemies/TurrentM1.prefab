@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 61556307363183308}
   - component: {fileID: 114225084925540778}
   m_Layer: 0
-  m_Name: HoverEnemyS2
+  m_Name: TurrentM1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109,11 +109,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 9
   lifeSpan: 0
-  maxHp: 300
+  maxHp: 5000
   speed: 2
+  lootChance: 100
   initialPosition: {x: 0, y: 0, z: 0}
   targetPosition: {x: 0, y: 0, z: 0}
-  fireInterval: 3
+  fireInterval: 1.5
   bulletID: 4
 --- !u!212 &212195309624574820
 SpriteRenderer:
