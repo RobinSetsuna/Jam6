@@ -14,12 +14,4 @@ public class StraightFire : Weapon
             bullet.gameObject.SetActive(true);
         }
     }
-
-#if UNITY_EDITOR
-    [UnityEditor.MenuItem("Assets/Create/Weapons/StraightFire")]
-    public static void CreateAsset()
-    {
-        ScriptableObjectUtility.CreateAsset<StraightFire>();
-    }
-#endif
 }

@@ -16,12 +16,4 @@ public class SplitFire : Weapon
             bullet.gameObject.SetActive(true);
         }
     }
-
-#if UNITY_EDITOR
-    [UnityEditor.MenuItem("Assets/Create/Weapons/SplitFire")]
-    public static void CreateAsset()
-    {
-        ScriptableObjectUtility.CreateAsset<SplitFire>();
-    }
-#endif
 }
